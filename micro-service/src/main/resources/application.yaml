@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: micro-service
+  profiles:
+    active: dev
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: ALWAYS
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+server:
+  port: 8081
+
+
+logBack:
+  logPathDir: ${logPathDir:./log/${spring.application.name}}

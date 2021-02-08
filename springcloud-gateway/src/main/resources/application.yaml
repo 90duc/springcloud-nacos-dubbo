@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: springcloud-gateway
+  profiles:
+    active: dev
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: ALWAYS
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      httpclient:
+        connect-timeout: 60000
+        response-timeout: 5s
+      routes:
+      - id: micro-service1
+        uri: lb://micro-service
+        predicates:
+        - Path=/micro-service1/**
+        filters:
+        - StripPrefix=1
+      - id: micro-service3
+        uri: lb://micro-service
+        predicates:
+        - Path=/micro-service3/**
+        filters:
+        - PrefixPath=/micro
+
+server:
+  port: 8083
+
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 120000
+ribbon:
+  ReadTimeout: 240000
+  ConnectTimeout: 2000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  eager-load:
+    enabled: true
+    clients: micro-service
+
+
+logBack:
+  logPathDir: ${logPathDir:./log/${spring.application.name}}

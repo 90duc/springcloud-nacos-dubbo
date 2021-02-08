@@ -1,0 +1,36 @@
+dubbo:
+  registry:
+    address: spring-cloud://${spring.cloud.nacos.discovery.server-addr}
+  protocol:
+    name: dubbo
+    port: -1
+  scan:
+    base-packages: com.mk.springcloud.dubbo
+  cloud:
+    subscribed-services: ''
+
+spring:
+  application:
+    name: user-provider
+  profiles:
+    active: dev
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: ALWAYS
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.31.188:8848
+
+server:
+  port: 8084
+
+feign:
+  hystrix:
+    enabled: true
+
+logBack:
+  logPathDir: ${logPathDir:./log/${spring.application.name}}

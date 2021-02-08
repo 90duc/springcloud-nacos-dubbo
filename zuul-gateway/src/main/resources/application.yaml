@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: zuul-gateway
+  profiles:
+    active: dev
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: ALWAYS
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+server:
+  port: 8082
+
+zuul:
+  strip-prefix: true #转发路径截断匹配前缀
+#  prefix: "/api"
+  add-proxy-headers: false
+  set-content-length: true
+  semaphore:
+    max-semaphores: 600
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 120000
+ribbon:
+  ReadTimeout: 240000
+  ConnectTimeout: 2000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  eager-load:
+    enabled: true
+    clients: micro-service
+
+
+logBack:
+  logPathDir: ${logPathDir:./log/${spring.application.name}}
